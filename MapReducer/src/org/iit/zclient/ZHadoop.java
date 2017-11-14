@@ -91,7 +91,9 @@ public class ZHadoop {
 					}
 				}
 			} 
-			zk = new ZooKeeper("127.0.0.1:2181", 10000, new ClientWatcher());
+			String hostname = "zookeeper";
+			int port = 2181;
+			zk = new ZooKeeper(hostname + ":" + port, 10000, new ClientWatcher());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

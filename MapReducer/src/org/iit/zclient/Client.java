@@ -4,7 +4,9 @@ import org.iit.zdoop.*;
 
 public class Client {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
+		Thread.sleep(5000);
+
 		// Initialize hadoop
 		ZHadoop hadoop = new ZHadoop();
 
@@ -17,13 +19,13 @@ public class Client {
 
 		// Start a job with mapper and reducer, also, we need specify the
 		// input(data) and output(result)
-		if(!hadoop.isCmdMode()) {
+		if (!hadoop.isCmdMode()) {
 			Job job = new Job();
 			job.setMapper(MyMapper.class);
 			job.setReducer(MyReducer.class);
-	
+
 			job.setData(data.getBytes());
-	
+
 			// Start hadoop
 			hadoop.execute(job);
 		} else {

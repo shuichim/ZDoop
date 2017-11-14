@@ -16,7 +16,9 @@ public class ZWorker {
 	private boolean print;
 	private String id;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
+		Thread.sleep(5000);
+
 		new ZWorker().start(args);
 	}
 
@@ -25,37 +27,41 @@ public class ZWorker {
 		if (args.length >= 1) {
 			id = args[0];
 			System.out.println(args[0]);
-			if(args.length >= 2) {
-				for(int i = 1; i < args.length; i++) {
-					if("-debug".equals(args[i])) {
+			if (args.length >= 2) {
+				for (int i = 1; i < args.length; i++) {
+					if ("-debug".equals(args[i])) {
 						debug = true;
 					}
-					if("-print".equals(args[i])) {
+					if ("-print".equals(args[i])) {
 						print = true;
 					}
 				}
 			}
-		} 
+		}
 	}
 
 	public void start(String[] args) {
 		try {
 			setParameter(args);
-			server = "127.0.0.1:2181";
-			zk = new ZooKeeper(server, 10000, new Watcher(){
+			String hostname = "zookeeper";
+			int port = 2181;
+			server = hostname + ":" + port;
+			System.out.println("connecting to " + server);
+			zk = new ZooKeeper(server, 10000, new Watcher() {
 				@Override
 				public void process(WatchedEvent event) {
-					
+
 				}
 			});
+			System.out.println("connected to " + server);
 			zk.create("/Workers/" + id, null, Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
-			
+
 			TaskWatcher ww = new TaskWatcher(this);
 			ww.setZk(zk);
 			ww.watchZNode();
-			
-			while(true) {
-				Thread.sleep(1000);	
+
+			while (true) {
+				Thread.sleep(1000);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -65,7 +71,7 @@ public class ZWorker {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public boolean isDebug() {
 		return debug;
 	}
@@ -73,7 +79,7 @@ public class ZWorker {
 	public void setDebug(boolean debug) {
 		this.debug = debug;
 	}
-	
+
 	public boolean isPrint() {
 		return print;
 	}
@@ -89,7 +95,7 @@ public class ZWorker {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public ZooKeeper getZk() {
 		return zk;
 	}
