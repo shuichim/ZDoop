@@ -11,7 +11,7 @@ services:
       - ./build:/usr/local/build
     depends_on:
       - "zookeeper"
-    command: java -cp build/libs/ZDoop-all.jar org.iit.zserver.ZMaster
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zserver.ZMaster m1
   worker-1:
     build:
       context: .
@@ -44,6 +44,38 @@ services:
     depends_on:
       - "master"
     command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w4
+  worker-5:
+    build:
+      context: .
+    volumes:
+      - ./build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w5
+  worker-6:
+    build:
+      context: .
+    volumes:
+      - ./build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w6
+  worker-7:
+    build:
+      context: .
+    volumes:
+      - ./build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w7
+  worker-8:
+    build:
+      context: .
+    volumes:
+      - ./build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w8
   client:
     build:
       context: .
@@ -55,4 +87,8 @@ services:
       - "worker-2"
       - "worker-3"
       - "worker-4"
-    command: java -cp build/libs/ZDoop-all.jar org.iit.zclient.Client
+      - "worker-5"
+      - "worker-6"
+      - "worker-7"
+      - "worker-8"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zclient.Client -f build/resources/main/500kb.txt

@@ -5,3 +5,6 @@ build:
 run: build
 	docker-compose down
 	docker-compose up || true
+
+eclipse:
+	./gradlew eclipse
