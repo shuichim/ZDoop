@@ -23,7 +23,7 @@ public class TaskWatcher implements Watcher {
 	private ZooKeeper zk;
 	private String name;
 	private ZWorker worker;
-	
+
 	public TaskWatcher(ZWorker worker) {
 		this.worker = worker;
 		this.name = worker.getId();
@@ -55,7 +55,7 @@ public class TaskWatcher implements Watcher {
 	}
 
 	private void doReducer(Task t) {
-		System.out.println("Do reducer");
+		// System.out.println("Do reducer");
 		ByteClassLoader bcl = new ByteClassLoader();
 		bcl.setClassData(t.getReducerData());
 		Class<?> reducer = bcl.findClass(t.getReducer());
@@ -68,7 +68,7 @@ public class TaskWatcher implements Watcher {
 			Method[] mds = reducer.getMethods();
 			for (Method m : mds) {
 				if (m.getName().equals("reduce")) {
-					System.out.println("Task start");
+					// System.out.println("Task start");
 					for (int i = 0; i < part.size(); i++) {
 						m.invoke(instance, new Object[] { part.get(i).getKey(),
 								new Integer[] { part.get(i).getValue() }, context });
@@ -77,10 +77,10 @@ public class TaskWatcher implements Watcher {
 					// Mapper done, then upload it to master.
 					Util.zooCreate(zk, "/Tasks/Complete/" + name + "_", Util.serialize(t),
 							CreateMode.PERSISTENT_SEQUENTIAL);
-					if(worker.isPrint()) {
+					if (worker.isPrint()) {
 						printResult(context.getResult());
 					}
-					System.out.println("Task complete\n");
+					// System.out.println("Task complete\n");
 				}
 			}
 
@@ -96,7 +96,7 @@ public class TaskWatcher implements Watcher {
 	}
 
 	private void doMapper(Task t) {
-		System.out.println("Do mapper");
+		// System.out.println("Do mapper");
 		ByteClassLoader bcl = new ByteClassLoader();
 		bcl.setClassData(t.getMapperData());
 		Class<?> mapper = bcl.findClass(t.getMapper());
@@ -109,7 +109,7 @@ public class TaskWatcher implements Watcher {
 			Method[] mds = mapper.getMethods();
 			for (Method m : mds) {
 				if (m.getName().equals("map")) {
-					System.out.println("Task start");
+					// System.out.println("Task start");
 					for (int i = 0; i < part.size(); i++) {
 						m.invoke(instance, new Object[] { null, part.get(i), context });
 					}
@@ -117,10 +117,10 @@ public class TaskWatcher implements Watcher {
 					// Mapper done, then upload it to master.
 					Util.zooCreate(zk, "/Tasks/Complete/" + name + "_", Util.serialize(t),
 							CreateMode.PERSISTENT_SEQUENTIAL);
-					if(worker.isPrint()) {
+					if (worker.isPrint()) {
 						printResult(context.getResult());
 					}
-					System.out.println("Task complete\n");
+					// System.out.println("Task complete\n");
 				}
 			}
 
@@ -147,7 +147,8 @@ public class TaskWatcher implements Watcher {
 					if (children != null) {
 						for (int i = 0; i < children.size(); i++) {
 							if (Util.isMatch(name, children.get(i))) {
-								System.out.println("Task detected " + children.get(i));
+								// System.out.println("Task detected " +
+								// children.get(i));
 								doGetTask(children.get(i));
 							}
 						}
@@ -159,10 +160,10 @@ public class TaskWatcher implements Watcher {
 			}
 		};
 	}
-	
+
 	public static void printResult(HashMap<String, Integer> map) {
-		for(Entry<String, Integer> e : map.entrySet()) {
-			System.out.println(e.getKey() + ":" + e.getValue());
+		for (Entry<String, Integer> e : map.entrySet()) {
+			// System.out.println(e.getKey() + ":" + e.getValue());
 		}
 	}
 

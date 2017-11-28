@@ -29,9 +29,10 @@ public class ZMaster {
 
 		@Override
 		public void process(WatchedEvent event) {
-			if (instance.isDebug()) {
-				System.out.println("Event " + event.getType() + " has been occured！");
-			}
+			// if (instance.isDebug()) {
+			// System.out.println("Event " + event.getType() + " has been
+			// occured！");
+			// }
 		}
 	}
 
@@ -39,7 +40,7 @@ public class ZMaster {
 		id = "w1";
 		if (args.length >= 1) {
 			id = args[0];
-			System.out.println(args[0]);
+			// System.out.println(args[0]);
 			if (args.length >= 2) {
 				for (int i = 1; i < args.length; i++) {
 					if ("-debug".equals(args[i])) {
@@ -94,7 +95,7 @@ public class ZMaster {
 	}
 
 	public void createNodes() throws KeeperException, InterruptedException {
-		System.out.println("creating nodes");
+		// System.out.println("creating nodes");
 		Util.zooCreate(zk, "/Tasks", null, CreateMode.PERSISTENT);
 		Util.zooCreate(zk, "/Masters", null, CreateMode.PERSISTENT);
 		Util.zooCreate(zk, "/Workers", null, CreateMode.PERSISTENT);
@@ -103,7 +104,7 @@ public class ZMaster {
 		Util.zooCreate(zk, "/Tasks/Complete", null, CreateMode.PERSISTENT);
 		Util.zooCreate(zk, "/Jobs/New", null, CreateMode.PERSISTENT);
 		Util.zooCreate(zk, "/Jobs/Complete", null, CreateMode.PERSISTENT);
-		System.out.println("created nodes");
+		// System.out.println("created nodes");
 	}
 
 	public ZooKeeper getZk() {

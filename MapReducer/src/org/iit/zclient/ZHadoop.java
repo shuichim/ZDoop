@@ -1,18 +1,17 @@
 package org.iit.zclient;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
-
+import org.apache.zookeeper.AsyncCallback.ChildrenCallback;
 import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.KeeperException.Code;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
-import org.apache.zookeeper.AsyncCallback.ChildrenCallback;
-import org.apache.zookeeper.KeeperException.Code;
 import org.iit.zdoop.Config;
 import org.iit.zdoop.Job;
 import org.iit.zdoop.KVPair;
@@ -41,17 +40,20 @@ public class ZHadoop {
 			}
 		}
 
+		long endTime;
+
 		public void doGetJob(String path) {
 			byte[] data = Util.zooGetData(zk, path);
 			Util.zooDelete(zk, path);
 			Job j = (Job) Util.deserialize(data);
-			System.out.println("Time elapsed: " + (System.nanoTime() - startTime) / 1000000 + "ms");
+			endTime = System.nanoTime();
 			@SuppressWarnings("unchecked")
 			ArrayList<KVPair> result = (ArrayList<KVPair>) Util.deserialize(j.getData());
 			System.out.println("Result:");
 			for (KVPair e : result) {
 				System.out.println(e.getKey() + " " + e.getValue());
 			}
+			System.out.println("Time elapsed: " + ((endTime - startTime) / 1000000) + "ms");
 			hasResult = true;
 		}
 
@@ -109,7 +111,7 @@ public class ZHadoop {
 		job.setReducerData(readClass(job.getReducer()));
 		startTime = System.nanoTime();
 		Util.zooCreate(zk, "/Jobs/New/" + id + "_", Util.serialize(job), CreateMode.PERSISTENT_SEQUENTIAL);
-		System.out.println("A new job has been submitted\n");
+		// System.out.println("A new job has been submitted\n");
 
 		if (!cmdMode) {
 			while (true) {
@@ -136,7 +138,7 @@ public class ZHadoop {
 				return Util.readFile(paths[i]);
 			}
 		}
-		System.out.println("No class exist!");
+		// System.out.println("No class exist!");
 		return null;
 	}
 
@@ -153,7 +155,7 @@ public class ZHadoop {
 		Job job = new Job();
 		boolean mapper = false, reducer = false, data = false;
 		hasResult = false;
-		System.out.println("Please input a command:");
+		// System.out.println("Please input a command:");
 		while (true) {
 			String line = sc.nextLine();
 			if (Util.isMatch("submit", line.toLowerCase())) {
@@ -162,7 +164,8 @@ public class ZHadoop {
 					job = new Job();
 					break;
 				} else {
-					System.out.println("Please submit mapper, reducer and data!");
+					// System.out.println("Please submit mapper, reducer and
+					// data!");
 					continue;
 				}
 			}
@@ -170,23 +173,23 @@ public class ZHadoop {
 			String[] args = path.split(" ");
 			File f = new File(args[0]);
 			if (!f.exists()) {
-				System.out.println("File not exist!");
+				// System.out.println("File not exist!");
 				continue;
 			}
 			if (Util.isMatch("mapper", line.toLowerCase())) {
 				mapper = true;
 				job.setMapperData(Util.readFile(args[0]));
 				job.setMapper(args[1]);
-				System.out.println("Set mapper success!");
+				// System.out.println("Set mapper success!");
 			} else if (Util.isMatch("reducer", line.toLowerCase())) {
 				reducer = true;
 				job.setReducerData(Util.readFile(args[0]));
 				job.setReducer(args[1]);
-				System.out.println("Set reducer success!");
+				// System.out.println("Set reducer success!");
 			} else if (Util.isMatch("data", line.toLowerCase())) {
 				data = true;
 				job.setData(Util.readFile(path));
-				System.out.println("Set data success!");
+				// System.out.println("Set data success!");
 			}
 		}
 		while (!hasResult) {

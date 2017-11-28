@@ -35,13 +35,13 @@ public class WorkerWatcher implements Watcher {
 	public void process(WatchedEvent event) {
 		this.watchZNode();
 		
-        if(instance.isDebug()) {
-        	System.out.println("Event Tasks " + event.getType() + " has been occured！");
-        }   
+//        if(instance.isDebug()) {
+//        	System.out.println("Event Tasks " + event.getType() + " has been occured！");
+//        }   
 	}
 	
 	private void doSetWorker(List<String> children) {
-		System.out.println("Workers has been changed with " + children.size() + " workers. \n");
+//		System.out.println("Workers has been changed with " + children.size() + " workers. \n");
 		ArrayList<String> workers = new ArrayList<String>();
 		for(int i = 0; i < children.size(); i++) {
 			workers.add(children.get(i));

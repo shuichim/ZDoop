@@ -91,4 +91,4 @@ services:
       - "worker-6"
       - "worker-7"
       - "worker-8"
-    command: java -cp build/libs/ZDoop-all.jar org.iit.zclient.Client -f build/resources/main/500kb.txt
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zclient.Client -f build/resources/main/100kb.txt

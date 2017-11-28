@@ -31,9 +31,9 @@ public class JobWatcher implements Watcher {
 	public void process(WatchedEvent event) {
 		this.watchZNode();
 
-		if(instance.isDebug()) {
-			System.out.println("Event Jobs " + event.getType() + " has been occured！");
-		}
+//		if(instance.isDebug()) {
+//			System.out.println("Event Jobs " + event.getType() + " has been occured！");
+//		}
 	}
 
 	public ChildrenCallback createCallback() {

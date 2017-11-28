@@ -26,7 +26,7 @@ public class ZWorker {
 		id = "w1";
 		if (args.length >= 1) {
 			id = args[0];
-			System.out.println(args[0]);
+			// System.out.println(args[0]);
 			if (args.length >= 2) {
 				for (int i = 1; i < args.length; i++) {
 					if ("-debug".equals(args[i])) {
@@ -46,14 +46,14 @@ public class ZWorker {
 			String hostname = "zookeeper";
 			int port = 2181;
 			server = hostname + ":" + port;
-			System.out.println("connecting to " + server);
+			// System.out.println("connecting to " + server);
 			zk = new ZooKeeper(server, 10000, new Watcher() {
 				@Override
 				public void process(WatchedEvent event) {
 
 				}
 			});
-			System.out.println("connected to " + server);
+			// System.out.println("connected to " + server);
 			zk.create("/Workers/" + id, null, Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
 
 			TaskWatcher ww = new TaskWatcher(this);

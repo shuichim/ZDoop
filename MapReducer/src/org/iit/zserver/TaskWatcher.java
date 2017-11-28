@@ -35,9 +35,9 @@ public class TaskWatcher implements Watcher {
 	public void process(WatchedEvent event) {
 		this.watchZNode();
 
-		if(instance.isDebug()) {
-			System.out.println("Event Tasks " + event.getType() + " has been occured！");
-		}
+//		if(instance.isDebug()) {
+//			System.out.println("Event Tasks " + event.getType() + " has been occured！");
+//		}
 	}
 
 	private void doTaskComplete(String path) {

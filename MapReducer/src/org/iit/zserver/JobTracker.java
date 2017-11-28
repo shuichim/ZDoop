@@ -23,6 +23,12 @@ public class JobTracker {
 	private ZooKeeper zk;
 	private Config cfg;
 	private ZMaster instance;
+	long start;
+	long partition;
+	long mapping;
+	long shuffling;
+	long reducing;
+	long collecting;
 
 	public JobTracker(ZMaster instance) {
 		this.mapper = new ArrayList<>();
@@ -36,7 +42,7 @@ public class JobTracker {
 	}
 
 	public void doCollect(Task t) {
-		System.out.println("Master do collect task");
+		// System.out.println("Master do collect task");
 		if (t.getStatus() == 1) {
 			this.mapperTask.add(t);
 		} else {
@@ -46,8 +52,9 @@ public class JobTracker {
 
 	public void doShuffle() {
 		if (this.status == 1 && this.mapperTask.size() == this.mapper.size()) {
-			System.out.println("Master do shuffling\n");
+			// System.out.println("Master do shuffling\n");
 			this.status = 2; // Do reducer;
+			mapping = System.nanoTime();
 
 			ArrayList<ArrayList<KVPair>> shuffle = new ArrayList<>();
 			for (int i = 0; i < this.reducer.size(); i++) {
@@ -55,18 +62,20 @@ public class JobTracker {
 				shuffle.add(result);
 			}
 			// Shuffle
-			while(!this.mapperTask.isEmpty()) {
+			while (!this.mapperTask.isEmpty()) {
 				Task t = this.mapperTask.remove();
 				@SuppressWarnings("unchecked")
 				HashMap<String, Integer> data = (HashMap<String, Integer>) Util.deserialize(t.getData());
 				for (Entry<String, Integer> e : data.entrySet()) {
 					int index = doHash(e.getKey(), this.reducer.size());
-					if(instance.isPrint()) {
-						System.out.println("  " + e.getKey() + " send to " + this.reducer.get(index));
-					}
+					// if(instance.isPrint()) {
+					// System.out.println(" " + e.getKey() + " send to " +
+					// this.reducer.get(index));
+					// }
 					shuffle.get(index).add(new KVPair(e.getKey(), e.getValue()));
 				}
 			}
+			shuffling = System.nanoTime();
 			for (int i = 0; i < this.reducer.size(); i++) {
 				Task t = new Task();
 				t.setData(Util.serialize(shuffle.get(i)));
@@ -76,8 +85,8 @@ public class JobTracker {
 				t.setStatus(2);
 				t.setTaskid(instance.getIndex());
 				// Update data;
-				System.out.println("Do reducer on " + this.reducer.get(i));
-				Util.zooCreate(zk, "/Tasks/New/" + this.reducer.get(i) + "_" , Util.serialize(t),
+				// System.out.println("Do reducer on " + this.reducer.get(i));
+				Util.zooCreate(zk, "/Tasks/New/" + this.reducer.get(i) + "_", Util.serialize(t),
 						CreateMode.PERSISTENT_SEQUENTIAL);
 			}
 		}
@@ -92,19 +101,22 @@ public class JobTracker {
 		} else {
 			index = reducer - 1;
 		}
-		if(index < 0 || index >= reducer) {
+		if (index < 0 || index >= reducer) {
 			index = reducer - 1;
 		}
 		return index;
 	}
 
 	public void doPartition(String path) {
-		if(cfg.getWorkers().size() < 2) {
-			System.out.println("No enough workers. Job will wait until enough workers join group.");
+		if (cfg.getWorkers().size() < 2) {
+			// System.out.println("No enough workers. Job will wait until enough
+			// workers join group.");
 			return;
 		}
-		
-		System.out.println("Master do partition on " + path + ", we have " + cfg.getWorkers().size() + " workers \n");
+		start = System.nanoTime();
+
+		// System.out.println("Master do partition on " + path + ", we have " +
+		// cfg.getWorkers().size() + " workers \n");
 		byte[] data = Util.zooGetData(zk, "/Jobs/New/" + path);
 		Job job = (Job) Util.deserialize(data);
 		String[] words = new String(job.getData()).split("\n");
@@ -143,10 +155,10 @@ public class JobTracker {
 			t.setJobid(jobid);
 			t.setStatus(1);
 			tracker.getMapper().add(worker);
-			System.out.println("Do mapper on " + worker + "\n");
-			Util.zooCreate(zk, "/Tasks/New/" + worker + "_" , Util.serialize(t),
-					CreateMode.PERSISTENT_SEQUENTIAL);
+			// System.out.println("Do mapper on " + worker + "\n");
+			Util.zooCreate(zk, "/Tasks/New/" + worker + "_", Util.serialize(t), CreateMode.PERSISTENT_SEQUENTIAL);
 		}
+		partition = System.nanoTime();
 
 		// Set reducer
 		for (int i = mapper; i < cfg.getWorkers().size(); i++) {
@@ -157,21 +169,27 @@ public class JobTracker {
 	public void doMerge() {
 		ArrayList<KVPair> result = new ArrayList<>();
 		if (this.reducerTask.size() == this.reducer.size() && this.status == 2) {
-			System.out.println("Master do mergeing\n");
-			while(!this.reducerTask.isEmpty()) {
+			reducing = System.nanoTime();			// System.out.println("Master do mergeing\n");
+			while (!this.reducerTask.isEmpty()) {
 				Task t = this.reducerTask.remove();
 				@SuppressWarnings("unchecked")
 				HashMap<String, Integer> data = (HashMap<String, Integer>) Util.deserialize(t.getData());
 				for (Entry<String, Integer> e : data.entrySet()) {
 					result.add(new KVPair(e.getKey(), e.getValue()));
-					if(instance.isPrint()) {
-						System.out.println(e.getKey() + ": " + e.getValue());
-					}
+					// if(instance.isPrint()) {
+					// System.out.println(e.getKey() + ": " + e.getValue());
+					// }
 				}
 			}
+			collecting = System.nanoTime();
 			job.setData(Util.serialize(result));
 			Util.zooCreate(zk, "/Jobs/Complete/" + job.getName(), Util.serialize(job), CreateMode.PERSISTENT);
 			this.status = 1;
+			System.out.println("partition elapsed: " + ((partition - start) / 1000000) + "ms");
+			System.out.println("mapping elapsed: " + ((mapping - partition) / 1000000) + "ms");
+			System.out.println("shuffling elapsed: " + ((shuffling - mapping) / 1000000) + "ms");
+			System.out.println("reducing elapsed: " + ((reducing - shuffling) / 1000000) + "ms");
+			System.out.println("collecting elapsed: " + ((collecting - reducing) / 1000000) + "ms");
 		}
 	}
 
