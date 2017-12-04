@@ -155,7 +155,8 @@ public class JobTracker {
 			t.setJobid(jobid);
 			t.setStatus(1);
 			tracker.getMapper().add(worker);
-			// System.out.println("Do mapper on " + worker + "\n");
+//			System.out.println("Do mapper on " + worker + "\n");
+//			System.out.println(Util.serialize(t).length);
 			Util.zooCreate(zk, "/Tasks/New/" + worker + "_", Util.serialize(t), CreateMode.PERSISTENT_SEQUENTIAL);
 		}
 		partition = System.nanoTime();
@@ -169,7 +170,8 @@ public class JobTracker {
 	public void doMerge() {
 		ArrayList<KVPair> result = new ArrayList<>();
 		if (this.reducerTask.size() == this.reducer.size() && this.status == 2) {
-			reducing = System.nanoTime();			// System.out.println("Master do mergeing\n");
+			reducing = System.nanoTime(); // System.out.println("Master do
+											// mergeing\n");
 			while (!this.reducerTask.isEmpty()) {
 				Task t = this.reducerTask.remove();
 				@SuppressWarnings("unchecked")

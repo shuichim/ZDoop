@@ -6,34 +6,34 @@ services:
       - 2181:2181
   master:
     build:
-      context: .
+      context: ../
     volumes:
-      - ./build:/usr/local/build
+      - ../build:/usr/local/build
     depends_on:
       - "zookeeper"
     command: java -cp build/libs/ZDoop-all.jar org.iit.zserver.ZMaster m1
   worker-1:
     build:
-      context: .
+      context: ../
     volumes:
-      - ./build:/usr/local/build
+      - ../build:/usr/local/build
     depends_on:
       - "master"
     command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w1
   worker-2:
     build:
-      context: .
+      context: ../
     volumes:
-      - ./build:/usr/local/build
+      - ../build:/usr/local/build
     depends_on:
       - "master"
     command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w2
   client:
     build:
-      context: .
+      context: ../
     volumes:
-      - ./build:/usr/local/build
-      - ./build/classes/java/main:/usr/local/bin
+      - ../build:/usr/local/build
+      - ../build/classes/java/main:/usr/local/bin
     depends_on:
       - "worker-1"
       - "worker-2"

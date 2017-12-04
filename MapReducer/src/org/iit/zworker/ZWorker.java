@@ -43,7 +43,7 @@ public class ZWorker {
 	public void start(String[] args) {
 		try {
 			setParameter(args);
-			String hostname = "zookeeper";
+			String hostname = "localhost";
 			int port = 2181;
 			server = hostname + ":" + port;
 			// System.out.println("connecting to " + server);
@@ -54,7 +54,9 @@ public class ZWorker {
 				}
 			});
 			// System.out.println("connected to " + server);
+			// System.out.println(id + ": creating /Workers/" + id);
 			zk.create("/Workers/" + id, null, Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
+			// System.out.println(id + ": created /Workers/" + id);
 
 			TaskWatcher ww = new TaskWatcher(this);
 			ww.setZk(zk);
@@ -66,6 +68,7 @@ public class ZWorker {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (KeeperException e) {
+			System.out.print(id + ": ");
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();

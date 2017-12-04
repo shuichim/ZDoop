@@ -146,7 +146,7 @@ public class TaskWatcher implements Watcher {
 				case OK:
 					if (children != null) {
 						for (int i = 0; i < children.size(); i++) {
-							if (Util.isMatch(name, children.get(i))) {
+							if (Util.isMatch(name + "_", children.get(i))) {
 								// System.out.println("Task detected " +
 								// children.get(i));
 								doGetTask(children.get(i));

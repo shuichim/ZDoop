@@ -1,0 +1,94 @@
+version: '2'
+services:
+  zookeeper:
+    image: zookeeper
+    ports:
+      - 2181:2181
+  master:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "zookeeper"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zserver.ZMaster m1
+  worker-1:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w1
+  worker-2:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w2
+  worker-3:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w3
+  worker-4:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w4
+  worker-5:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w5
+  worker-6:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w6
+  worker-7:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w7
+  worker-8:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w8
+  client:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+      - ../build/classes/java/main:/usr/local/bin
+    depends_on:
+      - "worker-1"
+      - "worker-2"
+      - "worker-3"
+      - "worker-4"
+      - "worker-5"
+      - "worker-6"
+      - "worker-7"
+      - "worker-8"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zclient.Client -f build/resources/main/1mb.txt

@@ -1,0 +1,382 @@
+version: '2'
+services:
+  zookeeper:
+    image: zookeeper
+    ports:
+      - 2181:2181
+  master:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "zookeeper"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zserver.ZMaster m1
+  worker-1:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w1
+  worker-2:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w2
+  worker-3:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w3
+  worker-4:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w4
+  worker-5:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w5
+  worker-6:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w6
+  worker-7:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w7
+  worker-8:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w8
+  worker-9:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w9
+  worker-10:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w10
+  worker-11:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w11
+  worker-12:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w12
+  worker-13:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w13
+  worker-14:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w14
+  worker-15:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w15
+  worker-16:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w16
+  worker-17:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w17
+  worker-18:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w18
+  worker-19:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w19
+  worker-20:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w20
+  worker-21:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w21
+  worker-22:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w22
+  worker-23:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w23
+  worker-24:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w24
+  worker-25:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w25
+  worker-26:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w26
+  worker-27:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w27
+  worker-28:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w28
+  worker-29:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w29
+  worker-30:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w30
+  worker-31:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w31
+  worker-32:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w32
+  worker-33:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w33
+  worker-34:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w34
+  worker-35:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w35
+  worker-36:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w36
+  worker-37:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w37
+  worker-38:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w38
+  worker-39:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w39
+  worker-40:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+    depends_on:
+      - "master"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zworker.ZWorker w40
+  client:
+    build:
+      context: ../
+    volumes:
+      - ../build:/usr/local/build
+      - ../build/classes/java/main:/usr/local/bin
+    depends_on:
+      - "worker-1"
+      - "worker-2"
+      - "worker-3"
+      - "worker-4"
+      - "worker-5"
+      - "worker-6"
+      - "worker-7"
+      - "worker-8"
+      - "worker-9"
+      - "worker-10"
+      - "worker-11"
+      - "worker-12"
+      - "worker-13"
+      - "worker-14"
+      - "worker-15"
+      - "worker-16"
+      - "worker-17"
+      - "worker-18"
+      - "worker-19"
+      - "worker-20"
+      - "worker-21"
+      - "worker-22"
+      - "worker-23"
+      - "worker-24"
+      - "worker-25"
+      - "worker-26"
+      - "worker-27"
+      - "worker-28"
+      - "worker-29"
+      - "worker-30"
+      - "worker-31"
+      - "worker-32"
+      - "worker-33"
+      - "worker-34"
+      - "worker-35"
+      - "worker-36"
+      - "worker-37"
+      - "worker-38"
+      - "worker-39"
+      - "worker-40"
+    command: java -cp build/libs/ZDoop-all.jar org.iit.zclient.Client -f build/resources/main/1mb.txt

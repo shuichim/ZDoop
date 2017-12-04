@@ -68,7 +68,7 @@ public class ZHadoop {
 					case OK:
 						if (children != null) {
 							for (int i = 0; i < children.size(); i++) {
-								if (Util.isMatch(id, children.get(i))) {
+								if (Util.isMatch(id + "_", children.get(i))) {
 									doGetJob("/Jobs/Complete/" + children.get(i));
 								}
 							}
@@ -96,7 +96,7 @@ public class ZHadoop {
 					}
 				}
 			}
-			String hostname = "zookeeper";
+			String hostname = "localhost";
 			int port = 2181;
 			zk = new ZooKeeper(hostname + ":" + port, 10000, new ClientWatcher());
 		} catch (IOException e) {
@@ -110,6 +110,7 @@ public class ZHadoop {
 		job.setMapperData(readClass(job.getMapper()));
 		job.setReducerData(readClass(job.getReducer()));
 		startTime = System.nanoTime();
+		// System.out.println(Util.serialize(job).length);
 		Util.zooCreate(zk, "/Jobs/New/" + id + "_", Util.serialize(job), CreateMode.PERSISTENT_SEQUENTIAL);
 		// System.out.println("A new job has been submitted\n");
 

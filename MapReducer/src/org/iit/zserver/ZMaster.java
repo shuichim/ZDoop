@@ -64,7 +64,7 @@ public class ZMaster {
 		try {
 			setParameter(args);
 			cfg = new Config();
-			String hostname = "zookeeper";
+			String hostname = "localhost";
 			int port = 2181;
 			cfg.setServer(hostname + ":" + port);
 			zk = new ZooKeeper(cfg.getServer(), 10000, new ServerWatcher(this));
